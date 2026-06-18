@@ -1,0 +1,60 @@
+# Minimal local stack — opt-in service profiles. Full stack lands in feature 0.1.
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: hubinity
+      POSTGRES_PASSWORD: hubinity_local
+      POSTGRES_MULTIPLE_DATABASES: hb_catalog,hb_support,hb_cashier,sc_order
+    ports: ["5432:5432"]
+    volumes:
+      - ./local/postgres-init.sh:/docker-entrypoint-initdb.d/init.sh:ro
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U hubinity"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  rabbitmq:
+    image: rabbitmq:3.13-management-alpine
+    environment:
+      RABBITMQ_DEFAULT_USER: hubinity
+      RABBITMQ_DEFAULT_PASS: hubinity_local
+    ports: ["5672:5672", "15672:15672"]
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.0
+    command: ["start-dev", "--import-realm"]
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    volumes:
+      - ../platform-iam/realms:/opt/keycloak/data/import:ro
+    ports: ["8081:8080"]
+    healthcheck:
+      test: ["CMD-SHELL", "exec 3<>/dev/tcp/localhost/8080 && echo -e 'GET /realms/master HTTP/1.0\\n\\n' >&3 && head -n 1 <&3 | grep '200'"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+
+  hb-catalog-service:
+    profiles: ["catalog"]
+    build:
+      context: ../hb-catalog-service
+      dockerfile: Dockerfile
+    environment:
+      SPRING_PROFILES_ACTIVE: local
+    ports: ["8080:8080"]
+    depends_on:
+      postgres: { condition: service_healthy }
+      rabbitmq: { condition: service_healthy }
+      keycloak: { condition: service_healthy }
+
+volumes:
+  postgres-data:
