@@ -1,0 +1,12 @@
+apiVersion: 1
+datasources:
+  # NOTE: This datasource expects hb-catalog-service to be running on the
+  # same compose network (start it with `make up-catalog` AND
+  # `make up-observability` together). When Phase 5 lands a real Prometheus
+  # server, this URL should be replaced with `http://prometheus:9090`.
+  - name: Catalog-Actuator
+    type: prometheus
+    access: proxy
+    url: http://hb-catalog-service:8080/actuator/prometheus
+    isDefault: false
+    editable: false
