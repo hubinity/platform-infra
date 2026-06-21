@@ -40,14 +40,14 @@ Working directory for this doc:
 Install the following on your workstation. One-line install hints below for
 Debian/Ubuntu and macOS (Homebrew).
 
-- [ ] **git** ≥ 2.40
+- [x] **git** ≥ 2.40
   ```bash
   # Linux
   sudo apt-get install -y git
   # macOS
   brew install git
   ```
-- [ ] **gh** (GitHub CLI) ≥ 2.40
+- [x] **gh** (GitHub CLI) ≥ 2.40
   ```bash
   # Linux
   curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg \
@@ -56,37 +56,37 @@ Debian/Ubuntu and macOS (Homebrew).
   # macOS
   brew install gh
   ```
-- [ ] **docker** (Engine + CLI) and **docker buildx**
+- [x] **docker** (Engine + CLI) and **docker buildx**
   ```bash
   # Linux (Docker Engine)
   curl -fsSL https://get.docker.com | sh
   # macOS (Docker Desktop)
   brew install --cask docker
   ```
-- [ ] **jq** (for extracting values from JSON in shell scripts)
+- [x] **jq** (for extracting values from JSON in shell scripts)
   ```bash
   sudo apt-get install -y jq    # Linux
   brew install jq               # macOS
   ```
-- [ ] **supabase** CLI (optional but recommended for DB migrations later)
+- [x] **supabase** CLI (optional but recommended for DB migrations later)
   ```bash
   # Linux/macOS via npm
   npm install -g supabase
   # or macOS
   brew install supabase/tap/supabase
   ```
-- [ ] **railway** CLI (optional, useful for tailing logs)
+- [x] **railway** CLI (optional, useful for tailing logs)
   ```bash
   # macOS
   brew install railway
   # Linux
   curl -fsSL https://railway.app/install.sh | sh
   ```
-- [ ] **vercel** CLI (optional)
+- [x] **vercel** CLI (optional)
   ```bash
   npm install -g vercel
   ```
-- [ ] **netlify** CLI (optional)
+- [x] **netlify** CLI (optional)
   ```bash
   npm install -g netlify-cli
   ```
@@ -103,7 +103,7 @@ Create or confirm an account at each provider. Use the recommended plan and a
 **shared organizational email** (e.g. `ops@hubinity.io` — adjust to the actual
 domain). Enable 2FA everywhere.
 
-- [ ] **GitHub** — https://github.com/join — Org `hubinity` already exists.
+- [x] **GitHub** — https://github.com/join — Org `hubinity` already exists.
 - [ ] **Supabase** — https://supabase.com — Free tier.
 - [ ] **Railway** — https://railway.app — Hobby ($5/svc) for paid services,
   Free for the rest. Linked to GitHub for repo-based deploys.
@@ -123,6 +123,7 @@ Pick **one** secret store and use it throughout. Recommended options:
 
 - [ ] **1Password** — shared vault `hubinity-infra`.
 - [ ] OR **Bitwarden** — collection `hubinity/infra`.
+- [x] OR **Authenticator** - codes `hubinity-infra`.
 - [ ] OR a local encrypted file (`pass`, `age`-encrypted YAML) as a fallback.
 
 Every value captured below MUST be stored here before moving to the next
@@ -135,12 +136,12 @@ section. GitHub Actions secrets are populated **from** this store in Section
 
 ### 1.1 Confirm repositories
 
-- [ ] Authenticate `gh` against the org:
+- [x] Authenticate `gh` against the org:
   ```bash
   gh auth login --scopes "repo,read:org,admin:org,workflow,write:packages"
   gh auth status
   ```
-- [ ] Confirm the 12 repositories exist:
+- [x] Confirm the 12 repositories exist:
   ```bash
   gh repo list hubinity --limit 50 --json name --jq '.[].name' | sort
   ```
@@ -160,14 +161,14 @@ section. GitHub Actions secrets are populated **from** this store in Section
 
 ### 1.2 Teams
 
-- [ ] Create the three foundational teams (Admin only; skip if already
+- [x] Create the three foundational teams (Admin only; skip if already
   created):
   ```bash
   gh api -X POST orgs/hubinity/teams -f name='backend'  -f privacy='closed'
   gh api -X POST orgs/hubinity/teams -f name='frontend' -f privacy='closed'
   gh api -X POST orgs/hubinity/teams -f name='devops'   -f privacy='closed'
   ```
-- [ ] Add yourself (and any other operators) to all three teams:
+- [x] Add yourself (and any other operators) to all three teams:
   ```bash
   gh api -X PUT orgs/hubinity/teams/backend/memberships/${GITHUB_USERNAME}
   gh api -X PUT orgs/hubinity/teams/frontend/memberships/${GITHUB_USERNAME}
