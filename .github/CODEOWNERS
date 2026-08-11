@@ -1,0 +1,4 @@
+# Default owners — every PR pings DevOps.
+* @hubinity/devops
+
+# Add more specific rules below as needed (later rules override earlier ones).
