@@ -10,17 +10,17 @@
   "labels": ["dependencies"],
   "packageRules": [
     {
-      "matchPackagePatterns": ["^@hubinity/"],
-      "groupName": "hubinity internal packages",
-      "schedule": ["at any time"]
-    },
-    {
       "matchManagers": ["maven"],
       "groupName": "maven dependencies"
     },
     {
       "matchManagers": ["npm"],
       "groupName": "npm dependencies"
+    },
+    {
+      "matchPackagePatterns": ["^@hubinity/"],
+      "groupName": "hubinity internal packages",
+      "schedule": ["at any time"]
     }
   ],
   "vulnerabilityAlerts": { "enabled": true }
