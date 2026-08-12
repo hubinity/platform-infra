@@ -185,7 +185,7 @@ Apply uniform protection to every repo's `main` branch:
 - Restrict force pushes.
 - Restrict branch deletion.
 
-- [ ] Run the loop below (requires `gh` and `jq`):
+- [x] Run the loop below (requires `gh` and `jq`):
   ```bash
   for repo in $(gh repo list hubinity --limit 50 --json name --jq '.[].name'); do
     echo "Protecting hubinity/${repo}@main"
@@ -212,7 +212,7 @@ Apply uniform protection to every repo's `main` branch:
 
 ### 1.4 CODEOWNERS
 
-- [ ] Drop the following file at `.github/CODEOWNERS` in **every** repository.
+- [x] Drop the following file at `.github/CODEOWNERS` in **every** repository.
   Adjust the per-repo overrides as needed (e.g. `*-service` repos need
   `@hubinity/backend` as default, `*-web` repos need `@hubinity/frontend`).
 
